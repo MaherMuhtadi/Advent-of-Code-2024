@@ -5,13 +5,16 @@ def read(filename):
     instructions = []
     for i in range(len(text)):
         if text[i:i+4] == 'do()':
+            i += 4
             instructions.append(('do',))
         elif text[i:i+7] == "don't()":
+            i += 7
             instructions.append(("don't",))
         elif text[i:i+4] == 'mul(':
-            x = ''
-            y = ''
-            j = i + 4
+            i += 4
+            x = '' # First number
+            y = '' # Second number
+            j = i
             while text[j] != ',':
                 x += text[j]
                 j += 1
@@ -19,10 +22,9 @@ def read(filename):
             while text[j] != ')':
                 y += text[j]
                 j += 1
-            j += 1 # Skip the closing parenthesis
             if x.isdigit() and y.isdigit():
                 instructions.append(('mul', int(x), int(y)))
-            i = j
+                i = j + 1 # Skip the closing parenthesis
 
     return instructions
 
